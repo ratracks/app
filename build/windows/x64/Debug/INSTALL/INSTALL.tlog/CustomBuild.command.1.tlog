@@ -1,0 +1,10 @@
+^D:\WORKSPACE\RATRACKS\APP\BUILD\WINDOWS\CMAKEFILES\8323F4DF1333F804D471249362EA6AFB\INSTALL_FORCE.RULE
+setlocal
+cd .
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

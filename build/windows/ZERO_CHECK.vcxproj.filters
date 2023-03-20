@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Workspace\ratracks\app\build\windows\CMakeFiles\8323f4df1333f804d471249362ea6afb\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{0F48D482-B47B-3557-8A7D-59518A79A122}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
