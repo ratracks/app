@@ -38,30 +38,31 @@ class StartPage extends StatelessWidget {
                             end: -25,
                             curve: Curves.easeInOut,
                             duration: 2000.ms),
-                    Transform(
-                      transform: Matrix4.rotationX(300 * (pi / 180)),
-                      child: Padding(
-                              padding: const EdgeInsets.only(top: 50),
+                    Padding(
+                            padding: const EdgeInsets.only(top: 25, left: 10),
+                            child: Align(
+                              alignment: Alignment.center,
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.25,
-                                height: 30,
+                                height: 15,
                                 decoration: const BoxDecoration(
                                   color: Colors.black38,
+                                  borderRadius: BorderRadius.all(Radius.elliptical(150, 15))
                                 ),
-                              ))
-                          .animate(onPlay: (controller) => controller.repeat())
-                          .scaleX(
-                              begin: 1.2,
-                              end: .9,
-                              curve: Curves.easeInOut,
-                              duration: 2000.ms)
-                          .then()
-                          .scaleX(
-                              begin: .9,
-                              end: 1.2,
-                              curve: Curves.easeInOut,
-                              duration: 2000.ms),
-                    ),
+                              ),
+                            ))
+                        .animate(onPlay: (controller) => controller.repeat())
+                        .scaleX(
+                            begin: 1.2,
+                            end: .9,
+                            curve: Curves.easeInOut,
+                            duration: 2000.ms)
+                        .then()
+                        .scaleX(
+                            begin: .9,
+                            end: 1.2,
+                            curve: Curves.easeInOut,
+                            duration: 2000.ms),
                   ],
                 )),
               ),
