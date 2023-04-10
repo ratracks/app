@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'app_module.dart';
 
 void main() {
+  Animate.restartOnHotReload = true;
   runApp(const MyApp());
 }
 
@@ -55,7 +57,7 @@ class AppChild extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             minimumSize: MaterialStateProperty.all<Size>(
-              const Size(255.0, 65.0),
+              const Size(255.0, 60.0),
             ),
             backgroundColor: MaterialStateProperty.all<Color>(
               const Color.fromARGB(255, 255, 255, 255),
