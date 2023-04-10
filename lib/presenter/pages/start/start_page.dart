@@ -11,8 +11,8 @@ class StartPage extends StatelessWidget {
     return Expanded(
       child: Container(
         color: const Color.fromARGB(255, 255, 132, 32),
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 40),
+        child: Padding(        
+          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -22,8 +22,8 @@ class StartPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/images/logo.png', // replace with your image asset path
-                      width: MediaQuery.of(context).size.width * 0.5,
+                      'assets/images/logo.png', 
+                      width: MediaQuery.of(context).size.width * 0.7,
                       fit: BoxFit.contain,
                     )
                         .animate(onPlay: (controller) => controller.repeat())
@@ -43,34 +43,49 @@ class StartPage extends StatelessWidget {
                             child: Align(
                               alignment: Alignment.center,
                               child: Container(
-                                width: MediaQuery.of(context).size.width * 0.25,
+                                width: MediaQuery.of(context).size.width * 0.3,
                                 height: 15,
                                 decoration: const BoxDecoration(
-                                  color: Colors.black38,
-                                  borderRadius: BorderRadius.all(Radius.elliptical(150, 15))
-                                ),
+                                    color: Colors.black38,
+                                    borderRadius: BorderRadius.all(
+                                        Radius.elliptical(80, 15))),
                               ),
                             ))
                         .animate(onPlay: (controller) => controller.repeat())
                         .scaleX(
                             begin: 1.2,
-                            end: .9,
+                            end: 1,
                             curve: Curves.easeInOut,
                             duration: 2000.ms)
                         .then()
                         .scaleX(
-                            begin: .9,
+                            begin: 1,
                             end: 1.2,
                             curve: Curves.easeInOut,
                             duration: 2000.ms),
                   ],
                 )),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Modular.to.navigate('/home');
-                },
-                child: const Text('Iniciar'),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: Text(
+                  'Bem-vindo!\nAcompanhe suas\nentregas com facilidade :)',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 18,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Modular.to.navigate('/home');
+                  },
+                  child: const Text('Iniciar'),
+                ),
               ),
             ],
           ),
