@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'dart:math';
+import 'package:ratracks/domain/usecases/usecase.dart';
+import 'package:ratracks/domain/usecases/user/create_anonymous_user_usecase.dart';
 
 class StartPage extends StatelessWidget {
-  const StartPage({super.key});
+  final CreateAnonymousUserUsecase createAnonymousUserUsecase =
+      Modular.get<CreateAnonymousUserUsecase>();
+
+  StartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
         color: const Color.fromARGB(255, 255, 132, 32),
-        child: Padding(        
+        child: Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -22,7 +26,7 @@ class StartPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/images/logo.png', 
+                      'assets/images/logo.png',
                       width: MediaQuery.of(context).size.width * 0.7,
                       fit: BoxFit.contain,
                     )
@@ -81,8 +85,15 @@ class StartPage extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Modular.to.navigate('/home');
+                  onPressed: () async {
+                    try {
+                      await createAnonymousUserUsecase(NoParams());
+                      Modular.to.navigate('/home');
+                    } catch (error) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(error.toString()),
+                      ));
+                    }
                   },
                   child: const Text('Iniciar'),
                 ),
