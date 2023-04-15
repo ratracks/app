@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:ratracks/domain/contracts/repositories/user_repository.dart';
+import 'package:ratracks/domain/repositories/user_repository.dart';
 import 'package:ratracks/domain/errors/failures.dart';
 import 'package:ratracks/domain/usecases/usecase.dart';
 import 'package:ratracks/domain/usecases/user/create_anonymous_user_usecase.dart';
