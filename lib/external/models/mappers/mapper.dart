@@ -1,4 +1,4 @@
 abstract class Mapper<Dto, Entity> {
   Entity toEntity(Dto dto);
-  Map<String, dynamic> toJson(Entity entity);
+  Map<String, dynamic> toPayload(Entity entity);
 }

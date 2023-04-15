@@ -18,12 +18,23 @@ class MockUser {
         name: 'Mocked Name');
   }
 
-  static Map<String, dynamic> makeJson() {
+  static String makeReceivingJson() {
+    return """
+      {
+        "id": "Mocked UUID",
+        "createdAt": "2023-10-05T00:00:00.000",
+        "updatedAt": "2023-10-08T00:00:00.000",
+        "name": "Mocked Name"
+      }
+    """;
+  }
+
+  static Map<String, dynamic> makePayload() {
     return {
       "id": "Mocked UUID",
       "createdAt": "2023-10-05T00:00:00.000",
       "updatedAt": "2023-10-08T00:00:00.000",
-      "name": 'Mocked Name',
+      "name": "Mocked Name",
     };
   }
 }

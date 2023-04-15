@@ -14,7 +14,7 @@ class UserMapper implements Mapper<UserDto, UserEntity> {
   }
 
   @override
-  Map<String, dynamic> toJson(UserEntity entity) {
+  Map<String, dynamic> toPayload(UserEntity entity) {
     return {
       "id": entity.id,
       "createdAt": entity.createdAt.toIso8601String(),

@@ -10,9 +10,9 @@ void main() {
     expect(entity, MockUser.makeEntity());
   });
 
-  test('should return the correct json', () {
-    var json = UserMapper().toJson(MockUser.makeEntity());
+  test('should return the correct payload', () {
+    var json = UserMapper().toPayload(MockUser.makeEntity());
 
-    expect(json, MockUser.makeJson());
+    expect(json, MockUser.makePayload());
   });
 }
