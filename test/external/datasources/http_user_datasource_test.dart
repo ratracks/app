@@ -43,7 +43,7 @@ void main() {
       expect(result, MockUser.makeEntity());
     });
 
-    test('Should throw a ServerException when the call is unsuccessful', () async {
+    test('should throw a ServerException when the call is unsuccessful', () async {
       when(() => httpClient.post(any())).thenAnswer((_) async => HttpResponse(
             data: 'Something went wrong',
             statusCode: 400,
