@@ -5,14 +5,21 @@ import 'package:ratracks/external/models/mappers/mapper.dart';
 class UserMapper implements Mapper<UserDto, UserEntity> {
   @override
   UserEntity toEntity(UserDto dto) {
-    // TODO: implement toEntity
-    throw UnimplementedError();
+    return UserEntity(
+      id: dto.id,
+      createdAt: dto.createdAt,
+      updatedAt: dto.updatedAt,
+      name: dto.name,
+    );
   }
 
   @override
-  Map<String, dynamic> toJson() {
-    // TODO: implement toJson
-    throw UnimplementedError();
+  Map<String, dynamic> toJson(UserEntity entity) {
+    return {
+      "id": entity.id,
+      "createdAt": entity.createdAt.toIso8601String(),
+      "updatedAt": entity.updatedAt.toIso8601String(),
+      "name": entity.name,
+    };
   }
-
 }
