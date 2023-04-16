@@ -12,13 +12,14 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
+    return Scaffold(
+      body: Container(
         color: const Color.fromARGB(255, 255, 132, 32),
         child: Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
                 child: Center(
@@ -71,7 +72,7 @@ class StartPage extends StatelessWidget {
                 )),
               ),
               const Padding(
-                padding: EdgeInsets.only(bottom: 20),
+                padding: EdgeInsets.only(left: 10, right: 10, bottom: 20),
                 child: Text(
                   'Bem-vindo!\nAcompanhe suas\nentregas com facilidade :)',
                   style: TextStyle(
@@ -86,14 +87,15 @@ class StartPage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    try {
-                      await createAnonymousUserUsecase(NoParams());
-                      Modular.to.navigate('/home');
-                    } catch (error) {
+                    var result = await createAnonymousUserUsecase(NoParams());
+
+                    result.fold((left) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(error.toString()),
+                        content: Text(left.message),
                       ));
-                    }
+                    }, (r) {
+                      Modular.to.navigate('/home/');
+                    });
                   },
                   child: const Text('Iniciar'),
                 ),

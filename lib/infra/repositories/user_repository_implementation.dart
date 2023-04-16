@@ -18,7 +18,7 @@ class UserRepositoryImplementation implements UserRepository {
 
       return Right(result);
     } catch (error) {
-      return Left(ServerFailure());
+      return Left(ServerFailure(message: 'Ocorreu um erro ao acessar o aplicativo. Tente novamente mais tarde.'));
     }
   }
 }

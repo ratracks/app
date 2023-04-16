@@ -1,9 +1,16 @@
 import 'package:equatable/equatable.dart';
 
 // Internal APP Exceptions
-abstract class Failure extends Equatable {}
+abstract class Failure extends Equatable implements Exception {
+  String get message;
+}
 
 class ServerFailure extends Failure {
   @override
-  List<Object?> get props => [];
+  final String message;
+
+  ServerFailure({this.message = "Ocorreu um erro inesperado."});
+
+  @override
+  List<Object?> get props => [message];
 }
