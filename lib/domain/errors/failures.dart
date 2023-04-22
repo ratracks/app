@@ -14,3 +14,13 @@ class ServerFailure extends Failure {
   @override
   List<Object?> get props => [message];
 }
+
+class StorageWriteFailure extends Failure {
+  @override
+  final String message;
+
+  StorageWriteFailure({this.message = "Ocorreu um erro inesperado."});
+
+  @override
+  List<Object?> get props => [message];
+}
