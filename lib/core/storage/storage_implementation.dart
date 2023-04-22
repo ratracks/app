@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ratracks/core/storage/storage.dart';
+import 'package:ratracks/domain/errors/failures.dart';
 
 class StorageImplementation<TValue> implements Storage<TValue> {
   final storage = const FlutterSecureStorage();
