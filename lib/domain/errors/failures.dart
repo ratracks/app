@@ -24,3 +24,13 @@ class StorageWriteFailure extends Failure {
   @override
   List<Object?> get props => [message];
 }
+
+class StorageReadFailure extends Failure {
+  @override
+  final String message;
+
+  StorageReadFailure({this.message = "Ocorreu um erro inesperado."});
+
+  @override
+  List<Object?> get props => [message];
+}

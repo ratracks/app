@@ -35,4 +35,10 @@ class UserRepositoryImplementation implements UserRepository {
       return Left(StorageWriteFailure());
     }
   }
+  
+  @override
+  Future<Either<Failure, UserEntity?>> getLoggedUser() {
+    // TODO: implement getLoggedUser
+    throw UnimplementedError();
+  }
 }

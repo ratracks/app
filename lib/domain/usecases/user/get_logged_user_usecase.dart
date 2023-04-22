@@ -4,15 +4,15 @@ import 'package:ratracks/domain/entities/user_entity.dart';
 import 'package:ratracks/domain/errors/failures.dart';
 import 'package:ratracks/domain/usecases/usecase.dart';
 
-class SetLoggedUserUsecase extends UseCase<UserEntity, void> {
+class GetLoggedUserUsecase extends UseCase<NoParams, UserEntity?> {
   final UserRepository repository;
 
-  SetLoggedUserUsecase({
+  GetLoggedUserUsecase({
     required this.repository,
   });
 
   @override
-  Future<Either<Failure, void>> call(UserEntity params) async {
-    return await repository.setLoggedUser(params);
+  Future<Either<Failure, UserEntity?>> call(NoParams params) async {
+    return await repository.getLoggedUser();
   }
 }

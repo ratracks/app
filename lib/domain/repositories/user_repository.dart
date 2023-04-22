@@ -5,4 +5,5 @@ import 'package:ratracks/domain/errors/failures.dart';
 abstract class UserRepository {
   Future<Either<Failure, UserEntity>> createAnonymousUser();
   Future<Either<Failure, void>> setLoggedUser(UserEntity user);
+  Future<Either<Failure, UserEntity?>> getLoggedUser();
 }
