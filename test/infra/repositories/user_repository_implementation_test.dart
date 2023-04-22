@@ -78,4 +78,24 @@ void main() {
       expect(result, Left(StorageWriteFailure()));
     });
   });
+
+    group('getLoggedUser', () {
+    test('should read from storage', () async {
+      when(() => userStorage.read(any())).thenAnswer((_) async => MockUser.makeEntity());
+
+      await repository.getLoggedUser();
+
+      verify(() => userStorage.read(any())).called(1);
+    });
+
+    test(
+        'should throw an StorageReadFailure if something goes wrong',
+        () async {
+      when(() => userStorage.read(any())).thenThrow(Exception());
+
+      final result = await repository.getLoggedUser();
+
+      expect(result, Left(StorageReadFailure()));
+    });
+  });
 }

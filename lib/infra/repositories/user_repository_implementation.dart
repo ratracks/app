@@ -37,8 +37,13 @@ class UserRepositoryImplementation implements UserRepository {
   }
   
   @override
-  Future<Either<Failure, UserEntity?>> getLoggedUser() {
-    // TODO: implement getLoggedUser
-    throw UnimplementedError();
+  Future<Either<Failure, UserEntity?>> getLoggedUser() async {
+    try {
+      var result = await userStorage.read('logged_user');
+
+      return Right(result);
+    } catch (e) {
+      return Left(StorageReadFailure());
+    }
   }
 }
