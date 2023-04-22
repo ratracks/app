@@ -2,24 +2,23 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ratracks/core/storage/storage.dart';
-import 'package:ratracks/domain/errors/failures.dart';
 
-class StorageImplementation<TValue> implements Storage<TValue> {
+class StorageImplementation implements Storage {
   final storage = const FlutterSecureStorage();
   
   @override
-  Future<TValue?> read(String key) async {
+  Future<String?> read(String key) async {
     var result = await storage.read(key: key);
 
     if (result == null) {
       return null;
     }
 
-    return json.decode(result);
+    return result;
   }
 
   @override
-  Future<void> write(String key, value) async {
-    await storage.write(key: key, value: json.encode(value));
+  Future<void> write(String key, String value) async {
+    await storage.write(key: key, value: value);
   }
 }

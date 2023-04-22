@@ -1,4 +1,4 @@
-abstract class Storage<TValue> {
-  Future<void> write(String key, TValue value);
-  Future<TValue?> read(String key);
+abstract class Storage {
+  Future<void> write(String key, String value);
+  Future<String?> read(String key);
 }

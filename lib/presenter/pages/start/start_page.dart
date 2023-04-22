@@ -3,10 +3,19 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ratracks/domain/usecases/usecase.dart';
 import 'package:ratracks/domain/usecases/user/create_anonymous_user_usecase.dart';
+import 'package:ratracks/domain/usecases/user/get_logged_user_usecase.dart';
+
+import '../../../domain/usecases/user/set_logged_user_usecase.dart';
 
 class StartPage extends StatelessWidget {
   final CreateAnonymousUserUsecase createAnonymousUserUsecase =
       Modular.get<CreateAnonymousUserUsecase>();
+
+  final GetLoggedUserUsecase getLoggedUserUsecase =
+      Modular.get<GetLoggedUserUsecase>();
+
+  final SetLoggedUserUsecase setLoggedUserUsecase =
+      Modular.get<SetLoggedUserUsecase>();
 
   StartPage({super.key});
 
@@ -87,14 +96,36 @@ class StartPage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    var result = await createAnonymousUserUsecase(NoParams());
+                    var loggedUser = await getLoggedUserUsecase(NoParams());
 
-                    result.fold((left) {
+                    loggedUser.fold((left) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(left.message),
                       ));
-                    }, (r) {
-                      Modular.to.navigate('/home/');
+                    }, (loggedUser) async {   
+                      if (loggedUser != null) {
+                        Modular.to.navigate('/home/');
+
+                        return;
+                      }
+
+                      var result = await createAnonymousUserUsecase(NoParams());
+
+                      result.fold((left) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(left.message),
+                        ));
+                      }, (createdUser) async {
+                        var savedUser = await setLoggedUserUsecase(createdUser);
+
+                        savedUser.fold((left) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(left.message),
+                          ));
+                        }, (savedUser) {
+                          Modular.to.navigate('/home/');
+                        });
+                      });
                     });
                   },
                   child: const Text('Iniciar'),

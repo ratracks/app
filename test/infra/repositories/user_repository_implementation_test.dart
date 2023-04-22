@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -6,6 +8,7 @@ import 'package:ratracks/domain/entities/user_entity.dart';
 import 'package:ratracks/domain/errors/exceptions.dart';
 import 'package:ratracks/domain/repositories/user_repository.dart';
 import 'package:ratracks/domain/errors/failures.dart';
+import 'package:ratracks/external/models/mappers/user/user_mapper.dart';
 import 'package:ratracks/infra/datasources/user_datasource.dart';
 import 'package:ratracks/infra/repositories/user_repository_implementation.dart';
 
@@ -13,12 +16,12 @@ import '../../utils/factories/mock_user_factory.dart';
 
 class MockedUserDatasource extends Mock implements UserDatasource {}
 
-class MockedUserStorage extends Mock implements Storage<UserEntity> {}
+class MockedUserStorage extends Mock implements Storage {}
 
 void main() {
   late UserRepository repository;
   late UserDatasource datasource;
-  late Storage<UserEntity> userStorage;
+  late Storage userStorage;
 
   setUp(() {
     datasource = MockedUserDatasource();
@@ -81,7 +84,7 @@ void main() {
 
     group('getLoggedUser', () {
     test('should read from storage', () async {
-      when(() => userStorage.read(any())).thenAnswer((_) async => MockUser.makeEntity());
+      when(() => userStorage.read(any())).thenAnswer((_) async => json.encode(UserMapper().toJson(MockUser.makeEntity())));
 
       await repository.getLoggedUser();
 

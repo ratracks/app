@@ -11,7 +11,7 @@ void main() {
   });
 
   test('should return the correct payload', () {
-    var json = UserMapper().toPayload(MockUser.makeEntity());
+    var json = UserMapper().toJson(MockUser.makeEntity());
 
     expect(json, MockUser.makePayload());
   });
