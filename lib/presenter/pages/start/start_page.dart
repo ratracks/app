@@ -1,20 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'dart:math';
+import 'package:ratracks/domain/usecases/usecase.dart';
+import 'package:ratracks/domain/usecases/user/create_anonymous_user_usecase.dart';
+import 'package:ratracks/domain/usecases/user/get_logged_user_usecase.dart';
+
+import '../../../domain/usecases/user/set_logged_user_usecase.dart';
 
 class StartPage extends StatelessWidget {
-  const StartPage({super.key});
+  final CreateAnonymousUserUsecase createAnonymousUserUsecase =
+      Modular.get<CreateAnonymousUserUsecase>();
+
+  final GetLoggedUserUsecase getLoggedUserUsecase =
+      Modular.get<GetLoggedUserUsecase>();
+
+  final SetLoggedUserUsecase setLoggedUserUsecase =
+      Modular.get<SetLoggedUserUsecase>();
+
+  StartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
+    return Scaffold(
+      body: Container(
         color: const Color.fromARGB(255, 255, 132, 32),
-        child: Padding(        
+        child: Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
                 child: Center(
@@ -22,7 +36,7 @@ class StartPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/images/logo.png', 
+                      'assets/images/logo.png',
                       width: MediaQuery.of(context).size.width * 0.7,
                       fit: BoxFit.contain,
                     )
@@ -67,7 +81,7 @@ class StartPage extends StatelessWidget {
                 )),
               ),
               const Padding(
-                padding: EdgeInsets.only(bottom: 20),
+                padding: EdgeInsets.only(left: 10, right: 10, bottom: 20),
                 child: Text(
                   'Bem-vindo!\nAcompanhe suas\nentregas com facilidade :)',
                   style: TextStyle(
@@ -81,8 +95,38 @@ class StartPage extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Modular.to.navigate('/home');
+                  onPressed: () async {
+                    var loggedUser = await getLoggedUserUsecase(NoParams());
+
+                    loggedUser.fold((left) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(left.message),
+                      ));
+                    }, (loggedUser) async {   
+                      if (loggedUser != null) {
+                        Modular.to.navigate('/home/');
+
+                        return;
+                      }
+
+                      var result = await createAnonymousUserUsecase(NoParams());
+
+                      result.fold((left) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(left.message),
+                        ));
+                      }, (createdUser) async {
+                        var savedUser = await setLoggedUserUsecase(createdUser);
+
+                        savedUser.fold((left) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(left.message),
+                          ));
+                        }, (savedUser) {
+                          Modular.to.navigate('/home/');
+                        });
+                      });
+                    });
                   },
                   child: const Text('Iniciar'),
                 ),
