@@ -4,7 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:ratracks/core/storage/storage.dart';
-import 'package:ratracks/domain/entities/user_entity.dart';
 import 'package:ratracks/domain/errors/exceptions.dart';
 import 'package:ratracks/domain/repositories/user_repository.dart';
 import 'package:ratracks/domain/errors/failures.dart';

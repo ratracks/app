@@ -1,7 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ratracks/core/http/http_client_implementation.dart';
 import 'package:ratracks/core/storage/storage_implementation.dart';
-import 'package:ratracks/domain/entities/user_entity.dart';
 import 'package:ratracks/domain/usecases/user/create_anonymous_user_usecase.dart';
 import 'package:ratracks/domain/usecases/user/get_logged_user_usecase.dart';
 import 'package:ratracks/domain/usecases/user/set_logged_user_usecase.dart';
