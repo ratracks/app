@@ -36,11 +36,14 @@ class AppChild extends StatelessWidget {
             color: Color.fromARGB(255, 255, 255, 255),
             fontWeight: FontWeight.bold,
           ),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          )
         ),
         filledButtonTheme: FilledButtonThemeData(
           style: ButtonStyle(
             minimumSize: MaterialStateProperty.all<Size>(
-              const Size(255.0, 70.0),
+              const Size(255.0, 60.0),
             ),
             backgroundColor: MaterialStateProperty.all<Color>(
               const Color.fromARGB(255, 255, 132, 32),
@@ -49,7 +52,7 @@ class AppChild extends StatelessWidget {
               const Color.fromARGB(255, 255, 255, 255),
             ),
             textStyle: MaterialStateProperty.all<TextStyle>(const TextStyle(
-              fontWeight: FontWeight.normal,
+              fontWeight: FontWeight.bold,
               fontSize: 14.0,
             )),
           ),
