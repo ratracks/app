@@ -35,12 +35,14 @@ class CreateTrackingPage extends StatelessWidget {
             decoration: InputDecoration(
               hintText: 'Código de rastreio *',
             ),
+            textInputAction: TextInputAction.next,
           ),
           const SizedBox(height: 20),
           const TextField(
             decoration: InputDecoration(
               hintText: 'Nome do produto',
             ),
+            textInputAction: TextInputAction.done,
           ),
           const Expanded(
             child: Align(
