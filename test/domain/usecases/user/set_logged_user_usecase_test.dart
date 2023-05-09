@@ -5,7 +5,7 @@ import 'package:ratracks/domain/repositories/user_repository.dart';
 import 'package:ratracks/domain/errors/failures.dart';
 import 'package:ratracks/domain/usecases/user/set_logged_user_usecase.dart';
 
-import '../../utils/factories/mock_user_factory.dart';
+import '../../../utils/factories/mock_user_factory.dart';
 
 class MockedUserRepository extends Mock implements UserRepository {}
 

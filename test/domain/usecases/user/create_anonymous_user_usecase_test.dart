@@ -4,29 +4,29 @@ import 'package:mocktail/mocktail.dart';
 import 'package:ratracks/domain/repositories/user_repository.dart';
 import 'package:ratracks/domain/errors/failures.dart';
 import 'package:ratracks/domain/usecases/usecase.dart';
-import 'package:ratracks/domain/usecases/user/get_logged_user_usecase.dart';
+import 'package:ratracks/domain/usecases/user/create_anonymous_user_usecase.dart';
 
-import '../../utils/factories/mock_user_factory.dart';
+import '../../../utils/factories/mock_user_factory.dart';
 
 class MockedUserRepository extends Mock implements UserRepository {}
 
 void main() {
-  late GetLoggedUserUsecase usecase;
+  late CreateAnonymousUserUsecase usecase;
   late UserRepository repository;
 
   setUp(() {
     repository = MockedUserRepository();
-    usecase = GetLoggedUserUsecase(repository: repository);
+    usecase = CreateAnonymousUserUsecase(repository: repository);
   });
 
   void successMock() {
-    when(() => repository.getLoggedUser())
-        .thenAnswer((_) async => Right(MockUser.makeEntity()));
+    when(() => repository.createAnonymousUser())
+      .thenAnswer((_) async => Right(MockUser.makeEntity()));
   }
 
   void failureMock() {
-    when(() => repository.getLoggedUser())
-        .thenAnswer((_) async => Left(StorageReadFailure()));
+    when(() => repository.createAnonymousUser())
+      .thenAnswer((_) async => Left(ServerFailure()));
   }
 
   test('should call the repository', () async {
@@ -34,15 +34,15 @@ void main() {
 
     await usecase(NoParams());
 
-    verify(() => repository.getLoggedUser()).called(1);
+    verify(() => repository.createAnonymousUser()).called(1);
   });
 
-    test('should call the repository', () async {
+  test('should return an user when calling the respository sucessfully', () async {
     successMock();
 
-    await usecase(NoParams());
+    final result = await usecase(NoParams());
 
-    verify(() => repository.getLoggedUser()).called(1);
+    expect(result, Right(MockUser.makeEntity()));
   });
 
   test('should return a failure when something went wrong', () async {
@@ -50,6 +50,6 @@ void main() {
 
     final result = await usecase(NoParams());
 
-    expect(result, Left(StorageReadFailure()));
+    expect(result, Left(ServerFailure()));
   });
 }
