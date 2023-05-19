@@ -3,13 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:ratracks/domain/entities/enums/transporter_enum.dart';
 import 'package:ratracks/domain/repositories/tracking_repository.dart';
-import 'package:ratracks/domain/repositories/user_repository.dart';
 import 'package:ratracks/domain/errors/failures.dart';
 import 'package:ratracks/domain/usecases/tracking/create_tracking_usecase.dart';
-import 'package:ratracks/domain/usecases/usecase.dart';
-import 'package:ratracks/domain/usecases/user/create_anonymous_user_usecase.dart';
-
-import '../../../utils/factories/mock_user_factory.dart';
 
 class MockedTrackingRepository extends Mock implements TrackingRepository {}
 
