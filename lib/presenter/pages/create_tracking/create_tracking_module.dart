@@ -5,6 +5,6 @@ import 'create_tracking_page.dart';
 class CreateTrackingModule extends Module {
   @override
   final List<ModularRoute> routes = [
-    ChildRoute(Modular.initialRoute, child: (_, args) => CreateTrackingPage()),
+    ChildRoute(Modular.initialRoute, child: (_, args) => const CreateTrackingPage()),
   ];
 }
