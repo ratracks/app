@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ratracks/core/http/http_client.dart';
 import 'package:ratracks/domain/errors/exceptions.dart';
 import 'package:ratracks/domain/repositories/tracking_repository.dart';
@@ -15,16 +17,18 @@ class HttpTrackingDatasource implements TrackingDatasource {
   Future<void> create(CreateTrackingParams params) async {
     final url = Endpoints.createTracking();
 
-    try {
-      final response = await httpClient.post(url);
+    Map body = {
+      'productName': params.productName,
+      'trackingCode': params.trackingCode,
+      'userId': params.userId,
+    };
 
-      if (response.statusCode == 200) {
-        return;
-      } else {
-        throw ServerException();
-      }
-    } catch (e) {
-      throw ServerException();
+    final response = await httpClient.post(url, body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw ServerException(json.decode(response.data)['error']);
     }
   }
 }

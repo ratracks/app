@@ -23,7 +23,7 @@ void main() {
     final expectedUrl = Endpoints.createTracking();
 
     void successMock() {
-      when(() => httpClient.post(any()))
+      when(() => httpClient.post(any(), body: any(named: 'body')))
           .thenAnswer((_) async => HttpResponse(data: {}, statusCode: 200));
     }
 
@@ -31,9 +31,11 @@ void main() {
       successMock();
 
       await datasource.create(CreateTrackingParams(
-          trackingCode: '123456', transporter: Transporter.correios));
+          userId: '123',
+          trackingCode: '123456',
+          transporter: Transporter.correios));
 
-      verify(() => httpClient.post(expectedUrl)).called(1);
+      verify(() => httpClient.post(expectedUrl, body: any(named: 'body'))).called(1);
     });
 
     test('should throw a ServerException when the call is unsuccessful',
@@ -44,7 +46,9 @@ void main() {
           ));
 
       final call = datasource.create(CreateTrackingParams(
-          trackingCode: '123456', transporter: Transporter.correios));
+          userId: '123',
+          trackingCode: '123456',
+          transporter: Transporter.correios));
 
       expect(() => call, throwsA(ServerException()));
     });

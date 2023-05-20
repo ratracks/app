@@ -11,10 +11,12 @@ class CreateTrackingParams {
   String? productName;
   String trackingCode;
   Transporter transporter;
+  String userId;
 
   CreateTrackingParams({
     this.productName,
     required this.trackingCode,
-    required this.transporter
+    required this.transporter,
+    required this.userId,
   });
 }

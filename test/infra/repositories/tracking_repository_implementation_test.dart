@@ -19,6 +19,7 @@ void main() {
     repository = TrackingRepositoryImplementation(datasource: datasource);
 
     registerFallbackValue(CreateTrackingParams(
+      userId: '123',
       trackingCode: '123456',
       transporter: Transporter.correios,
     ));
@@ -29,6 +30,7 @@ void main() {
       when(() => datasource.create(any())).thenAnswer((_) async => {});
 
       await repository.createTracking(CreateTrackingParams(
+        userId: '123',
         trackingCode: '123456',
         transporter: Transporter.correios,
       ));
@@ -42,6 +44,7 @@ void main() {
       when(() => datasource.create(any())).thenThrow(ServerException());
 
       var result = await repository.createTracking(CreateTrackingParams(
+        userId: '123',
         trackingCode: '123456',
         transporter: Transporter.correios,
       ));

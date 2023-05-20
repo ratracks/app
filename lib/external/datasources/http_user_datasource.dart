@@ -19,20 +19,16 @@ class HttpUserDatasource implements UserDatasource {
   Future<UserEntity> createAnonymousUser() async {
     final url = Endpoints.anonymousUser();
 
-    try {
-      final response = await httpClient.post(url);
+    final response = await httpClient.post(url);
+    
+    if (response.statusCode == 201) {
+      final json = jsonDecode(response.data);
 
-      if (response.statusCode == 200) {
-        final json = jsonDecode(response.data);
+      UserDto dto = UserDto.fromJson(json);
 
-        UserDto dto = UserDto.fromJson(json);
-
-        return UserMapper().toEntity(dto);
-      } else {
-        throw ServerException();
-      }
-    } catch (e) {
-      throw ServerException();
+      return UserMapper().toEntity(dto);
+    } else {
+      throw ServerException(json.decode(response.data)['error']);
     }
   }
 }

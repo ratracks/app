@@ -1,8 +1,12 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ratracks/core/http/http_client_implementation.dart';
+import 'package:ratracks/core/storage/storage_implementation.dart';
 import 'package:ratracks/domain/usecases/tracking/create_tracking_usecase.dart';
+import 'package:ratracks/domain/usecases/user/get_logged_user_usecase.dart';
 import 'package:ratracks/external/datasources/http_tracking_datasource.dart';
+import 'package:ratracks/external/datasources/http_user_datasource.dart';
 import 'package:ratracks/infra/repositories/tracking_repository_implementation.dart';
+import 'package:ratracks/infra/repositories/user_repository_implementation.dart';
 
 import 'create_tracking_page.dart';
 
@@ -10,12 +14,17 @@ class CreateTrackingModule extends Module {
   @override
   final List<Bind> binds = [
     Bind.lazySingleton((i) => CreateTrackingUsecase(repository: i())),
+    Bind.lazySingleton((i) => GetLoggedUserUsecase(repository: i())),
     Bind.lazySingleton(
         (i) => TrackingRepositoryImplementation(datasource: i())),
+    Bind.lazySingleton(
+        (i) => UserRepositoryImplementation(datasource: i(), userStorage: i())),
     Bind.lazySingleton((i) => HttpTrackingDatasource(httpClient: i())),
+    Bind.lazySingleton((i) => HttpUserDatasource(httpClient: i())),
+    Bind.lazySingleton((i) => StorageImplementation()),
     Bind.lazySingleton((i) => HttpClientImplementation()),
   ];
-  
+
   @override
   final List<ModularRoute> routes = [
     ChildRoute(Modular.initialRoute,

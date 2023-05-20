@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:ratracks/core/storage/storage.dart';
+import 'package:ratracks/domain/errors/exceptions.dart';
 import 'package:ratracks/domain/repositories/user_repository.dart';
 import 'package:ratracks/domain/entities/user_entity.dart';
 import 'package:ratracks/domain/errors/failures.dart';
@@ -24,7 +25,9 @@ class UserRepositoryImplementation implements UserRepository {
       var result = await datasource.createAnonymousUser();
 
       return Right(result);
-    } catch (error) {
+    } on ServerException catch(error) {
+      return Left(ServerFailure(message: error.message ?? ''));
+    }catch (error) {
       return Left(ServerFailure());
     }
   }

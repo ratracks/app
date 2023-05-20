@@ -12,7 +12,7 @@ void main() {
   late CreateTrackingUsecase usecase;
   late TrackingRepository repository;
 
-  var params = CreateTrackingParams(trackingCode: "Mock Code", transporter: Transporter.correios);
+  var params = CreateTrackingParams(trackingCode: "Mock Code", transporter: Transporter.correios, userId: '123');
 
   setUp(() {
     repository = MockedTrackingRepository();
