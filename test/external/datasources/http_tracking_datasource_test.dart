@@ -6,10 +6,7 @@ import 'package:ratracks/domain/errors/exceptions.dart';
 import 'package:ratracks/domain/repositories/tracking_repository.dart';
 import 'package:ratracks/external/datasources/endpoints.dart';
 import 'package:ratracks/external/datasources/http_tracking_datasource.dart';
-import 'package:ratracks/external/datasources/http_user_datasource.dart';
 import 'package:ratracks/infra/datasources/tracking_datasource.dart';
-
-import '../../utils/factories/mock_user_factory.dart';
 
 class HttpClientMock extends Mock implements HttpClient {}
 

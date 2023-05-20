@@ -1,65 +1,131 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:ratracks/domain/entities/enums/transporter_enum.dart';
+import 'package:ratracks/domain/repositories/tracking_repository.dart';
+import 'package:ratracks/domain/usecases/tracking/create_tracking_usecase.dart';
 
-class CreateTrackingPage extends StatelessWidget {
+class CreateTrackingPage extends StatefulWidget {
   const CreateTrackingPage({super.key});
+
+  @override
+  State<StatefulWidget> createState() {
+    return CreateTrackingPageState();
+  }
+}
+
+class CreateTrackingPageState extends State<CreateTrackingPage> {
+  final CreateTrackingUsecase createTrackingUsecase =
+      Modular.get<CreateTrackingUsecase>();
+
+  final _formKey = GlobalKey<FormState>();
+
+  String trackingCode = '';
+  String? trackingName;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Novo rastreio'),
-      ),
-      body: SafeArea(
-        child: Padding(
-        padding: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height * 0.1,
-          bottom: MediaQuery.of(context).size.height * 0.05,
-          left: MediaQuery.of(context).size.width * 0.1,
-          right: MediaQuery.of(context).size.width * 0.1,
+        appBar: AppBar(
+          title: const Text('Novo rastreio'),
         ),
-        child: Column(
-        children: [
-          DropdownButton(
-            isExpanded: true,
-            value: 'correios',
-            items: const [
-              DropdownMenuItem(
-                value: 'correios',
-                child: Text('Correios'),
-              )
-            ], 
-            onChanged: null
-          ),
-          const SizedBox(height: 20),
-          const TextField(
-            decoration: InputDecoration(
-              hintText: 'Código de rastreio *',
-            ),
-            textInputAction: TextInputAction.next,
-          ),
-          const SizedBox(height: 20),
-          const TextField(
-            decoration: InputDecoration(
-              hintText: 'Nome do produto',
-            ),
-            textInputAction: TextInputAction.done,
-          ),
-          const Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                onPressed: null,
-                child: Text('Cadastrar'),
+        body: SafeArea(
+          child: Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.1,
+                bottom: MediaQuery.of(context).size.height * 0.05,
+                left: MediaQuery.of(context).size.width * 0.1,
+                right: MediaQuery.of(context).size.width * 0.1,
               ),
-              ),
-            )
-          )
-        ]
-      )
-      ),
-      )
-    );
+              child: Form(
+                  key: _formKey,
+                  child: Column(children: [
+                    DropdownButton(
+                        isExpanded: true,
+                        value: 'correios',
+                        items: const [
+                          DropdownMenuItem(
+                            value: 'correios',
+                            child: Text('Correios'),
+                          )
+                        ],
+                        onChanged: null),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      onSaved: (String? value) {
+                        trackingCode = value ?? '';
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Adicione um código de rastreio';
+                        }
+                        if (value.isEmpty) {
+                          return 'Adicione um código de rastreio';
+                        }
+
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Código de rastreio *',
+                      ),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      onSaved: (String? value) {
+                        trackingName = value;
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Nome do produto',
+                      ),
+                      textInputAction: TextInputAction.done,
+                    ),
+                    Expanded(
+                        child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: FilledButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+
+                              var result = await createTrackingUsecase(
+                                  CreateTrackingParams(
+                                      trackingCode: trackingCode,
+                                      productName: trackingName,
+                                      transporter: Transporter.correios));
+
+                              result.fold((l) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(l.message)),
+                                );
+                              }, (r) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Sucesso!'),
+                                        content: Text(
+                                            'O rastreio $trackingCode foi cadastrado com êxito.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Voltar'),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Modular.to.pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              });
+                            }
+                          },
+                          child: const Text('Cadastrar'),
+                        ),
+                      ),
+                    ))
+                  ]))),
+        ));
   }
 }
