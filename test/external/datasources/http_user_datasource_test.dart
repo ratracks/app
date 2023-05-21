@@ -24,7 +24,7 @@ void main() {
 
     void successMock() {
       when(() => httpClient.post(any())).thenAnswer((_) async =>
-          HttpResponse(data: MockUser.makeReceivingJson(), statusCode: 200));
+          HttpResponse(data: MockUser.makeReceivingJson(), statusCode: 201));
     }
 
     test('should call post method with correct url', () async {

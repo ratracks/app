@@ -1,3 +1,4 @@
 class Endpoints {
-  static String anonymousUser() => "http://<IP>:8080/users/anonymous";
+  static String anonymousUser() => "https://ratracks-api.onrender.com/users/anonymous";
+  static String createTracking() => "https://ratracks-api.onrender.com/trackings";
 }

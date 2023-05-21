@@ -1,5 +1,5 @@
 abstract class HttpClient {
-  Future<HttpResponse> post(String url);
+  Future<HttpResponse> post(String url, { String? body });
 }
 
 class HttpResponse {
