@@ -4,10 +4,18 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ratracks/domain/usecases/usecase.dart';
 import 'package:ratracks/domain/usecases/user/create_anonymous_user_usecase.dart';
 import 'package:ratracks/domain/usecases/user/get_logged_user_usecase.dart';
+import 'package:ratracks/presenter/widgets/app_button.dart';
 
 import '../../../domain/usecases/user/set_logged_user_usecase.dart';
 
-class StartPage extends StatelessWidget {
+class StartPage extends StatefulWidget {
+  const StartPage({super.key});
+
+  @override
+  State<StartPage> createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
   final CreateAnonymousUserUsecase createAnonymousUserUsecase =
       Modular.get<CreateAnonymousUserUsecase>();
 
@@ -17,7 +25,57 @@ class StartPage extends StatelessWidget {
   final SetLoggedUserUsecase setLoggedUserUsecase =
       Modular.get<SetLoggedUserUsecase>();
 
-  StartPage({super.key});
+  bool isLoading = false;
+
+  void startAndRedirectToHome() async {
+    var loggedUser = await getLoggedUserUsecase(NoParams());
+
+    loggedUser.fold((left) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(left.message),
+      ));
+    }, (loggedUser) async {
+      if (loggedUser != null) {
+        Modular.to.navigate('/home/');
+
+        return;
+      }
+
+      setState(() {
+        isLoading = true;
+      });
+
+      var result = await createAnonymousUserUsecase(NoParams());
+
+      result.fold((left) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(left.message),
+        ));
+
+        setState(() {
+          isLoading = false;
+        });
+      }, (createdUser) async {
+        var savedUser = await setLoggedUserUsecase(createdUser);
+
+        savedUser.fold((left) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(left.message),
+          ));
+
+          setState(() {
+            isLoading = false;
+          });
+        }, (savedUser) {
+          setState(() {
+            isLoading = false;
+          });
+
+          Modular.to.navigate('/home/');
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,41 +152,10 @@ class StartPage extends StatelessWidget {
               ),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    var loggedUser = await getLoggedUserUsecase(NoParams());
-
-                    loggedUser.fold((left) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(left.message),
-                      ));
-                    }, (loggedUser) async {   
-                      if (loggedUser != null) {
-                        Modular.to.navigate('/home/');
-
-                        return;
-                      }
-
-                      var result = await createAnonymousUserUsecase(NoParams());
-
-                      result.fold((left) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(left.message),
-                        ));
-                      }, (createdUser) async {
-                        var savedUser = await setLoggedUserUsecase(createdUser);
-
-                        savedUser.fold((left) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(left.message),
-                          ));
-                        }, (savedUser) {
-                          Modular.to.navigate('/home/');
-                        });
-                      });
-                    });
-                  },
-                  child: const Text('Iniciar'),
+                child: AppButton.elevated(
+                  text: 'Iniciar',
+                  onPressed: startAndRedirectToHome,
+                  isLoading: isLoading,
                 ),
               ),
             ],

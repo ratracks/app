@@ -5,6 +5,7 @@ import 'package:ratracks/domain/repositories/tracking_repository.dart';
 import 'package:ratracks/domain/usecases/tracking/create_tracking_usecase.dart';
 import 'package:ratracks/domain/usecases/usecase.dart';
 import 'package:ratracks/domain/usecases/user/get_logged_user_usecase.dart';
+import 'package:ratracks/presenter/widgets/app_button.dart';
 
 class CreateTrackingPage extends StatefulWidget {
   const CreateTrackingPage({super.key});
@@ -26,6 +27,64 @@ class CreateTrackingPageState extends State<CreateTrackingPage> {
 
   String trackingCode = '';
   String? trackingName;
+  bool isLoading = false;
+
+  void createTracking() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      var userEither = await getLoggedUserUsecase(NoParams());
+
+      if (userEither.isLeft()) {
+        return;
+      }
+
+      var user = userEither.getOrElse(() => null);
+
+      setState(() {
+        isLoading = true;
+      });
+
+      var result = await createTrackingUsecase(CreateTrackingParams(
+          trackingCode: trackingCode,
+          productName: trackingName,
+          userId: user!.id,
+          transporter: Transporter.correios));
+
+      result.fold((l) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l.message)),
+        );
+
+        setState(() {
+          isLoading = false;
+        });
+      }, (r) {
+        setState(() {
+          isLoading = false;
+        });
+        
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Sucesso!'),
+                content:
+                    Text('O rastreio $trackingCode foi cadastrado com êxito.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Voltar'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Modular.to.pop();
+                    },
+                  ),
+                ],
+              );
+            });
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +126,8 @@ class CreateTrackingPageState extends State<CreateTrackingPage> {
                           return 'Adicione um código de rastreio';
                         }
 
-                        RegExp regex = RegExp(r"^(?:[A-Z]{2}\d{9}[A-Z]{2}|\d{3}\.\d{3}\.\d{3}-\d{2})$");
+                        RegExp regex = RegExp(
+                            r"^(?:[A-Z]{2}\d{9}[A-Z]{2}|\d{3}\.\d{3}\.\d{3}-\d{2})$");
 
                         if (!regex.hasMatch(value)) {
                           return 'Código de rastreio inválido';
@@ -95,53 +155,10 @@ class CreateTrackingPageState extends State<CreateTrackingPage> {
                       alignment: Alignment.bottomCenter,
                       child: SizedBox(
                         width: double.infinity,
-                        child: FilledButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-
-                              var userEither = await getLoggedUserUsecase(NoParams());
-
-                              if (userEither.isLeft()) {
-                                return;
-                              }
-
-                              var user = userEither.getOrElse(() => null);
-
-                              var result = await createTrackingUsecase(
-                                  CreateTrackingParams(
-                                      trackingCode: trackingCode,
-                                      productName: trackingName,
-                                      userId: user!.id,
-                                      transporter: Transporter.correios));
-
-                              result.fold((l) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(l.message)),
-                                );
-                              }, (r) {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Sucesso!'),
-                                        content: Text(
-                                            'O rastreio $trackingCode foi cadastrado com êxito.'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: const Text('Voltar'),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              Modular.to.pop();
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    });
-                              });
-                            }
-                          },
-                          child: const Text('Cadastrar'),
+                        child: AppButton.filled(
+                          onPressed: createTracking,
+                          text: 'Cadastrar',
+                          isLoading: isLoading,
                         ),
                       ),
                     ))
