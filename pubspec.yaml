@@ -42,6 +42,22 @@ dependencies:
   mocktail: ^0.3.0
   http: ^0.13.5
   flutter_secure_storage: ^8.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.2.19
+
+flutter_native_splash:
+  color: "#FE8622"
+  image: "assets/launcher/splash.png"
+  android: true
+  ios: true
+
+flutter_launcher_icons:
+  image_path: "assets/launcher/icon.png"
+  ios: true
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  adaptive_icon_background: "#FE8622"
+  adaptive_icon_foreground: "assets/launcher/icon-android.png"
 
 dev_dependencies:
   flutter_test:
