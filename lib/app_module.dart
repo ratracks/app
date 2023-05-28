@@ -8,13 +8,10 @@ class AppModule extends Module {
   @override
   final List<ModularRoute> routes = [
     ModuleRoute('/', module: StartModule()),
+    ModuleRoute('/home',
+        module: HomeModule(), transition: TransitionType.rightToLeftWithFade),
     ModuleRoute(
-      '/home', 
-      module: HomeModule(),
-      transition: TransitionType.rightToLeftWithFade
-    ),
-    ModuleRoute(
-      '/create_tracking', 
+      '/create_tracking',
       module: CreateTrackingModule(),
       transition: TransitionType.rightToLeftWithFade,
     ),
