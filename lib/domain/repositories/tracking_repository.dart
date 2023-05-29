@@ -26,8 +26,10 @@ class CreateTrackingParams {
 
 class GetTrackingsParams {
   Status status;
+  String userId;
 
   GetTrackingsParams({
     required this.status,
+    required this.userId,
   });
 }

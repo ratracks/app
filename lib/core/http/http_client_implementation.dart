@@ -15,4 +15,16 @@ class HttpClientImplementation implements HttpClient {
       statusCode: response.statusCode,
     );
   }
+  
+  @override
+  Future<HttpResponse> get(String url) async {
+    final response = await client.get(Uri.parse(url), headers: {
+      'content-type': 'application/json',
+    });
+
+    return HttpResponse(
+      data: response.body, 
+      statusCode: response.statusCode,
+    );
+  }
 }

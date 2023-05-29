@@ -24,8 +24,12 @@ class TrackingRepositoryImplementation implements TrackingRepository {
   }
 
   @override
-  Future<Either<Failure, List<TrackingEntity>>> getTrackings(GetTrackingsParams params) {
-    // TODO: implement getTrackings
-    throw UnimplementedError();
+  Future<Either<Failure, List<TrackingEntity>>> getTrackings(GetTrackingsParams params) async {
+    try {
+      final result = await datasource.getTrackings(params);
+      return Right(result);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 }
