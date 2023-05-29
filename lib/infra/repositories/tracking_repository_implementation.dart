@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:ratracks/domain/entities/tracking_entity.dart';
 import 'package:ratracks/domain/errors/exceptions.dart';
 import 'package:ratracks/domain/repositories/tracking_repository.dart';
 import 'package:ratracks/domain/errors/failures.dart';
@@ -20,5 +21,11 @@ class TrackingRepositoryImplementation implements TrackingRepository {
     } on ServerException {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, List<TrackingEntity>>> getTrackings(GetTrackingsParams params) {
+    // TODO: implement getTrackings
+    throw UnimplementedError();
   }
 }
