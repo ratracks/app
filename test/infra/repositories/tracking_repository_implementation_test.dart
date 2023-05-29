@@ -41,7 +41,7 @@ void main() {
     test(
         'should throw an ServerFailure when datasource throws a server exception',
         () async {
-      when(() => datasource.create(any())).thenThrow(ServerException());
+      when(() => datasource.create(any())).thenThrow(const ServerException());
 
       var result = await repository.createTracking(CreateTrackingParams(
         userId: '123',

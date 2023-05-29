@@ -31,15 +31,14 @@ class AppChild extends StatelessWidget {
       title: 'RaTracks',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color.fromARGB(255, 255, 132, 32),
-          titleTextStyle: TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255),
-            fontWeight: FontWeight.bold,
-          ),
-          iconTheme: IconThemeData(
-            color: Colors.white,
-          )
-        ),
+            backgroundColor: Color.fromARGB(255, 255, 132, 32),
+            titleTextStyle: TextStyle(
+              color: Color.fromARGB(255, 255, 255, 255),
+              fontWeight: FontWeight.bold,
+            ),
+            iconTheme: IconThemeData(
+              color: Colors.white,
+            )),
         filledButtonTheme: FilledButtonThemeData(
           style: ButtonStyle(
             minimumSize: MaterialStateProperty.all<Size>(
@@ -80,6 +79,30 @@ class AppChild extends StatelessWidget {
             ),
           ),
         ),
+        segmentedButtonTheme: SegmentedButtonThemeData(style: ButtonStyle(          
+          side: MaterialStateProperty.resolveWith((states) {
+            return const BorderSide(width: 1, color: Colors.orange);
+          }),
+          visualDensity: VisualDensity.comfortable,
+          splashFactory: InkRipple.splashFactory,
+          
+          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.selected)) {
+                return const Color(0xFFFFB67B);
+              }
+
+              return Colors.transparent;
+            },                      
+          ),
+          foregroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) {
+              return const Color(0xFF3E3E3E);
+            }
+
+            return const Color(0xFF989898);
+          }),
+        )),
         primarySwatch: Colors.orange,
       ),
       routeInformationParser: Modular.routeInformationParser,

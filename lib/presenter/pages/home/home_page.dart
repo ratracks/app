@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:ratracks/presenter/widgets/app_button.dart';
+
+enum ListType {
+  inProgress,
+  finished,
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,68 +15,81 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    Modular.to.pushNamed('/create_tracking');
-    // setState(() {
-    //   // This call to setState tells the Flutter framework that something has
-    //   // changed in this State, which causes it to rerun the build method below
-    //   // so that the display can reflect the updated values. If we changed
-    //   // _counter without calling setState(), then the build method would not be
-    //   // called again, and so nothing would appear to happen.
-    //   _counter++;
-    // });
-  }
+  ListType selectedType = ListType.inProgress;
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: const Text('Ratracks'),
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          const SliverAppBar(
+            title: Text(
+              'Ratracks',
+              style: TextStyle(fontSize: 20),
+            ),
+            floating: true,
+            snap: true,
+          ),
+          const SliverPadding(padding: EdgeInsets.only(top: 30)),
+          SliverToBoxAdapter(
+            child: Padding(
+                padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.1,
+                  right: MediaQuery.of(context).size.width * 0.1,
+                ),
+                child: SegmentedButton(
+                  selected: {selectedType},
+                  onSelectionChanged: (value) {
+                    setState(() {
+                      selectedType = value.first;
+                    });
+                  },
+                  segments: const [
+                    ButtonSegment(value: ListType.inProgress, label: Text('Em andamento')),
+                    ButtonSegment(value: ListType.finished, label: Text('Finalizados')),
+                  ],
+                )),
+          ),
+          const SliverPadding(padding: EdgeInsets.only(top: 30)),
+          SliverList(
+              delegate: SliverChildBuilderDelegate((context, _) {
+            return Padding(
+              padding: EdgeInsets.only(
+                top: 10,
+                left: MediaQuery.of(context).size.width * 0.1,
+                right: MediaQuery.of(context).size.width * 0.1,
+              ),
+              child: GestureDetector(
+                onTap: () {
+                  Modular.to.pushNamed('tracking_details/teste');
+                },
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 100,
+                  child: Container(
+                    color: Colors.black38,
+                    child: const Center(child: Text('Rastreio')),
+                  ),
+                ),
+              ),
+            );
+          }, childCount: 10)),
+          SliverPadding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.03 + 100.0)),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).size.height * 0.03,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: AppButton.filled(
+            onPressed: () {
+              Modular.to.pushNamed('/create_tracking');
+            },
+            text: 'Novo rastreio'),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

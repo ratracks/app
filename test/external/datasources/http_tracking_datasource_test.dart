@@ -40,8 +40,8 @@ void main() {
 
     test('should throw a ServerException when the call is unsuccessful',
         () async {
-      when(() => httpClient.post(any())).thenAnswer((_) async => HttpResponse(
-            data: 'Something went wrong',
+     when(() => httpClient.post(any(), body: any(named: 'body'))).thenAnswer((_) async => HttpResponse(
+            data: """{"error": "Something went wrong"}""",
             statusCode: 400,
           ));
 
@@ -50,7 +50,7 @@ void main() {
           trackingCode: '123456',
           transporter: Transporter.correios));
 
-      expect(() => call, throwsA(ServerException()));
+      expect(() => call, throwsA(isA<ServerException>()));
     });
   });
 }

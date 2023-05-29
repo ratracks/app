@@ -9,7 +9,7 @@ class ServerFailure extends Failure {
   @override
   final String message;
 
-  ServerFailure({this.message = "Ocorreu um erro inesperado."});
+  ServerFailure({String? message}): message = message ?? 'Ocorreu um erro inesperado.';
 
   @override
   List<Object?> get props => [message];

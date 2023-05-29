@@ -53,7 +53,7 @@ void main() {
     test(
         'should throw an ServerFailure when datasource throws a server exception',
         () async {
-      when(() => datasource.createAnonymousUser()).thenThrow(ServerException());
+      when(() => datasource.createAnonymousUser()).thenThrow(const ServerException());
 
       final result = await repository.createAnonymousUser();
 

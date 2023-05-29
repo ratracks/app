@@ -43,15 +43,16 @@ void main() {
       expect(result, MockUser.makeEntity());
     });
 
-    test('should throw a ServerException when the call is unsuccessful', () async {
+    test('should throw a ServerException when the call is unsuccessful',
+        () async {
       when(() => httpClient.post(any())).thenAnswer((_) async => HttpResponse(
-            data: 'Something went wrong',
+            data: """{"error": "Something went wrong"}""",
             statusCode: 400,
           ));
 
       final call = datasource.createAnonymousUser();
 
-      expect(() => call, throwsA(ServerException()));
+      expect(() => call, throwsA(isA<ServerException>()));
     });
   });
 }

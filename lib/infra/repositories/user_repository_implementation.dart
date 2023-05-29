@@ -26,7 +26,7 @@ class UserRepositoryImplementation implements UserRepository {
 
       return Right(result);
     } on ServerException catch(error) {
-      return Left(ServerFailure(message: error.message ?? 'Ocorreu um erro inesperado ao iniciar.'));
+      return Left(ServerFailure(message: error.message));
     }catch (error) {
       return Left(ServerFailure());
     }
