@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:ratracks/domain/entities/tracking_entity.dart';
+import 'package:ratracks/domain/repositories/tracking_repository.dart';
+import '../../../../domain/usecases/tracking/get_tracking_details_usecase.dart';
 import '../../../widgets/app_details.dart';
 
 class TrackingDetailsPage extends StatefulWidget {
@@ -14,6 +17,56 @@ class TrackingDetailsPage extends StatefulWidget {
 }
 
 class _TrackingDetailsPageState extends State<TrackingDetailsPage> {
+  final GetTrackingDetailsUseCase getTrackingDetailsUseCase =
+      Modular.get<GetTrackingDetailsUseCase>();
+
+      bool isLoadingTrackingDetails = false;
+      TrackingEntity? tracking;
+
+  @override
+  void initState() {
+    super.initState();
+
+    load();
+  }
+
+  Future<void> load() async {
+    setState(() {
+        isLoadingTrackingDetails = true;
+      });
+
+    var result = await getTrackingDetailsUseCase(GetTrackingDetailsParams(trackingId: widget.trackingId));
+
+    result.fold((l){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showSnackbar(context, message: l.message);
+      });
+
+      setState(() {
+        isLoadingTrackingDetails = false;
+      });
+
+      return;
+    }, (r){
+      setState(() {
+        tracking = r;
+        isLoadingTrackingDetails = false;
+      });
+    });
+  }
+
+  void _showSnackbar(BuildContext ctx,
+      {String message = 'Ocorreu um erro inesperado.'}) {
+    ScaffoldMessenger.of(ctx).showSnackBar(
+      SnackBar(
+        content: Text('Oops... $message'),
+        duration: const Duration(
+          seconds: 2,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

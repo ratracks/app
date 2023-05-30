@@ -35,7 +35,7 @@ class TrackingDto {
       status: json['status'] == 'in_progress' ? Status.inProgress : Status.finished,
       transporter: Transporter.correios,
       productName: json['productName'],
-      trackingDetails: json['trackingDetails'] ? TrackingDetailsDto.fromJson(json['trackingDetails']) : null,
+      trackingDetails: json['trackingDetails'] != null ? TrackingDetailsDto.fromJson(json['trackingDetails']) : null,
     );
   }
 }
