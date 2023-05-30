@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ratracks/domain/entities/enums/status_enum.dart';
 import 'package:ratracks/domain/entities/tracking_entity.dart';
+import 'package:ratracks/domain/entities/user_entity.dart';
 import 'package:ratracks/domain/repositories/tracking_repository.dart';
 import 'package:ratracks/domain/usecases/tracking/get_trackings_usecase.dart';
 import 'package:ratracks/domain/usecases/usecase.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   ListType selectedType = ListType.inProgress;
   bool isLoadingTrackings = false;
   List<TrackingEntity> trackings = [];
+  late UserEntity user;
 
   @override
   void initState() {
@@ -48,14 +50,18 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    var user = result.getOrElse(() => null);
+    user = result.getOrElse(() => null) as UserEntity;
 
+    loadItems();
+  }
+
+  void loadItems({Status status = Status.inProgress}) async {
     setState(() {
       isLoadingTrackings = true;
     });
 
     var trackingsResult = await getTrackingsUsecase(
-        GetTrackingsParams(status: Status.inProgress, userId: user!.id));
+        GetTrackingsParams(status: status, userId: user.id));
 
     trackingsResult.fold((l) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -113,7 +119,13 @@ class _HomePageState extends State<HomePage> {
                   onSelectionChanged: (value) {
                     setState(() {
                       selectedType = value.first;
-                    });
+                      trackings = [];
+                    });                
+
+                    loadItems(
+                        status: value.first == ListType.inProgress
+                            ? Status.inProgress
+                            : Status.finished);
                   },
                   segments: const [
                     ButtonSegment(
