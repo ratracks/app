@@ -27,7 +27,7 @@ class HomeModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute(Modular.initialRoute, child: (_, args) => const HomePage()),
+    ChildRoute(Modular.initialRoute, child: (_, args) => HomePage(shouldRefresh: args.data != null ? args.data['refresh'] ?? false : false)),
     ChildRoute('/tracking_details/:trackingId',
         child: (_, args) =>
             TrackingDetailsPage(trackingId: args.params['trackingId'])),

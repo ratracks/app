@@ -16,7 +16,9 @@ enum ListType {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final bool shouldRefresh;
+
+  const HomePage({super.key, required this.shouldRefresh});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -78,8 +80,11 @@ class _HomePageState extends State<HomePage> {
 
       return;
     }, (r) {
+      var list = r;
+      list.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+
       setState(() {
-        trackings = r;
+        trackings = list;
         isLoadingTrackings = false;
       });
     });

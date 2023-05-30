@@ -25,8 +25,8 @@ class TrackingDto {
   static TrackingDto fromJson(Map<String, dynamic> json) {
     return TrackingDto(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: DateTime.parse(json['createdAt'] + 'Z'),
+      updatedAt: DateTime.parse(json['updatedAt'] + 'Z'),
       userId: json['userId'],
       trackingCode: json['trackingCode'],
       status:

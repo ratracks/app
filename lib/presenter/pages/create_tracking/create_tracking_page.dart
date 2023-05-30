@@ -76,7 +76,7 @@ class CreateTrackingPageState extends State<CreateTrackingPage> {
                     child: const Text('Voltar'),
                     onPressed: () {
                       Navigator.pop(context);
-                      Modular.to.pop();
+                      Modular.to.popAndPushNamed('/home', arguments: { 'refresh': true });
                     },
                   ),
                 ],
