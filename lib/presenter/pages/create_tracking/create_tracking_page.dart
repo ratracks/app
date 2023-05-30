@@ -115,6 +115,7 @@ class CreateTrackingPageState extends State<CreateTrackingPage> {
                         onChanged: null),
                     const SizedBox(height: 20),
                     TextFormField(
+                      textCapitalization: TextCapitalization.characters,
                       onSaved: (String? value) {
                         trackingCode = value ?? '';
                       },

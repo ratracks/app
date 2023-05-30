@@ -93,6 +93,10 @@ class AppChild extends StatelessWidget {
           }),
           visualDensity: VisualDensity.comfortable,
           splashFactory: InkRipple.splashFactory,
+          textStyle: MaterialStateProperty.all(
+              GoogleFonts.poppins(textStyle: const TextStyle(
+                fontSize: 12,
+              ))),
           backgroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {

@@ -110,7 +110,9 @@ class _HomePageState extends State<HomePage> {
           await loadItems(showLoading: false);
         },
         child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(),
+          ),
           slivers: [
             const SliverAppBar(
               title: Text(
