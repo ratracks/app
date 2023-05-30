@@ -30,6 +30,7 @@ class AppChild extends StatelessWidget {
     return MaterialApp.router(
       title: 'RaTracks',
       theme: ThemeData(
+        scaffoldBackgroundColor: const Color.fromRGBO(240, 240, 240, 1),
         appBarTheme: const AppBarTheme(
             backgroundColor: Color.fromARGB(255, 255, 132, 32),
             titleTextStyle: TextStyle(
