@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+class AppDetails extends StatelessWidget {
+  final DateTime updateAt;
+  final String status;
+  final String zone;
+
+  const AppDetails({
+    super.key,
+    required this.updateAt,
+    required this.status,
+    required this.zone,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final dateToString = DateFormat('dd/MM/yyyy - hh:mm').format(updateAt);
+
+    return SizedBox(
+        width: double.infinity,
+        height: 100,
+        child: Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              color: Colors.white,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              status,
+                              style: const TextStyle(
+                                color: Color.fromRGBO(255, 132, 32, 1),
+                                fontSize: 14.0,
+                              ),
+                            ),
+                            Text(
+                              zone,
+                              style: const TextStyle(
+                                color: Color.fromRGBO(62, 62, 62, 1),
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          dateToString,
+                          style: const TextStyle(
+                            color: Color.fromRGBO(112, 112, 112, 1),
+                            fontSize: 11.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]),
+            )));
+  }
+}
