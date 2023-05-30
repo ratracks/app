@@ -8,6 +8,7 @@ import 'package:ratracks/domain/usecases/tracking/get_trackings_usecase.dart';
 import 'package:ratracks/domain/usecases/usecase.dart';
 import 'package:ratracks/domain/usecases/user/get_logged_user_usecase.dart';
 import 'package:ratracks/presenter/widgets/app_button.dart';
+import '../../widgets/app_card.dart';
 
 enum ListType {
   inProgress,
@@ -120,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                     setState(() {
                       selectedType = value.first;
                       trackings = [];
-                    });                
+                    });
 
                     loadItems(
                         status: value.first == ListType.inProgress
@@ -154,7 +155,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           SliverList(
-              delegate: SliverChildBuilderDelegate((context, _) {
+              delegate: SliverChildBuilderDelegate((context, index) {
+            var tracking = trackings[index];
             return Padding(
               padding: EdgeInsets.only(
                 top: 10,
@@ -165,13 +167,9 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Modular.to.pushNamed('tracking_details/teste');
                 },
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 100,
-                  child: Container(
-                    color: Colors.black38,
-                    child: const Center(child: Text('Rastreio')),
-                  ),
+                child: AppCard(
+                  name: tracking.productName!,
+                  updateAt: tracking.updatedAt,
                 ),
               ),
             );
