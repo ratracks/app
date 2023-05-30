@@ -1,11 +1,13 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:ratracks/core/http/http_client.dart';
+import 'package:ratracks/domain/entities/enums/status_enum.dart';
 import 'package:ratracks/domain/entities/tracking_entity.dart';
 import 'package:ratracks/domain/errors/exceptions.dart';
 import 'package:ratracks/domain/repositories/tracking_repository.dart';
 import 'package:ratracks/external/datasources/endpoints.dart';
+import 'package:ratracks/external/models/dtos/tracking_dto.dart';
+import 'package:ratracks/external/models/mappers/tracking/tracking_mapper.dart';
 import 'package:ratracks/infra/datasources/tracking_datasource.dart';
 
 class HttpTrackingDatasource implements TrackingDatasource {
@@ -36,14 +38,16 @@ class HttpTrackingDatasource implements TrackingDatasource {
 
   @override
   Future<List<TrackingEntity>> getTrackings(GetTrackingsParams params) async {
-    final url = Endpoints.getTrackings(params.userId, params.status);
+    final url = Endpoints.getTrackings(params.userId, params.status.value);
 
     final response = await httpClient.get(url);
 
     if (response.statusCode == 200) {
-      log(response.data);
+      var trackingsFromJson = jsonDecode(response.data);
 
-      return [];
+      List<TrackingDto> trackingsDto = List<TrackingDto>.from(trackingsFromJson.map((i) => TrackingDto.fromJson(i)));
+
+      return List<TrackingEntity>.from(trackingsDto.map((i) => TrackingMapper().toEntity(i)));
     } else {
       throw ServerException(json.decode(response.data)['error']);
     }

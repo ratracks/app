@@ -8,7 +8,7 @@ class MockTracking {
       id: 'Mocked UUID',
       createdAt: DateTime(2023, 10, 5),
       updatedAt: DateTime(2023, 10, 8),
-      status: Status.in_progress,
+      status: Status.inProgress,
       trackingCode: 'AA123456789BR',
       transporter: Transporter.correios,
       userId: 'Mocked UUID',

@@ -14,7 +14,7 @@ void main() {
   late GetTrackingsUsecase usecase;
   late TrackingRepository repository;
 
-  var params = GetTrackingsParams(status: Status.in_progress, userId: 'Mocked UUID');
+  var params = GetTrackingsParams(status: Status.inProgress, userId: 'Mocked UUID');
 
   setUp(() {
     repository = MockedTrackingRepository();
