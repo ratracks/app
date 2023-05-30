@@ -56,10 +56,13 @@ class _HomePageState extends State<HomePage> {
     loadItems();
   }
 
-  void loadItems({Status status = Status.inProgress}) async {
-    setState(() {
-      isLoadingTrackings = true;
-    });
+  Future<void> loadItems(
+      {Status status = Status.inProgress, bool showLoading = true}) async {
+    if (showLoading) {
+      setState(() {
+        isLoadingTrackings = true;
+      });
+    }
 
     var trackingsResult = await getTrackingsUsecase(
         GetTrackingsParams(status: status, userId: user.id));
@@ -97,87 +100,92 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          const SliverAppBar(
-            title: Text(
-              'Ratracks',
-              style: TextStyle(fontSize: 20),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await loadItems(showLoading: false);
+        },
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            const SliverAppBar(
+              title: Text(
+                'Ratracks',
+                style: TextStyle(fontSize: 20),
+              ),
+              floating: true,
+              snap: true,
             ),
-            floating: true,
-            snap: true,
-          ),
-          const SliverPadding(padding: EdgeInsets.only(top: 30)),
-          SliverToBoxAdapter(
-            child: Padding(
+            const SliverPadding(padding: EdgeInsets.only(top: 30)),
+            SliverToBoxAdapter(
+              child: Padding(
+                  padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.1,
+                    right: MediaQuery.of(context).size.width * 0.1,
+                  ),
+                  child: SegmentedButton(
+                    selected: {selectedType},
+                    onSelectionChanged: (value) {
+                      setState(() {
+                        selectedType = value.first;
+                        trackings = [];
+                      });
+
+                      loadItems(
+                          status: value.first == ListType.inProgress
+                              ? Status.inProgress
+                              : Status.finished);
+                    },
+                    segments: const [
+                      ButtonSegment(
+                          value: ListType.inProgress,
+                          label: Text('Em andamento')),
+                      ButtonSegment(
+                          value: ListType.finished, label: Text('Finalizados')),
+                    ],
+                  )),
+            ),
+            const SliverPadding(padding: EdgeInsets.only(top: 30)),
+            if (isLoadingTrackings)
+              const SliverToBoxAdapter(
+                child: Center(
+                  child: SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+            if (!isLoadingTrackings && trackings.isEmpty)
+              const SliverToBoxAdapter(
+                child: Center(
+                  child: Text('Nenhum rastreio encontrado =/'),
+                ),
+              ),
+            SliverList(
+                delegate: SliverChildBuilderDelegate((context, index) {
+              var tracking = trackings[index];
+              return Padding(
                 padding: EdgeInsets.only(
+                  top: 10,
                   left: MediaQuery.of(context).size.width * 0.1,
                   right: MediaQuery.of(context).size.width * 0.1,
                 ),
-                child: SegmentedButton(
-                  selected: {selectedType},
-                  onSelectionChanged: (value) {
-                    setState(() {
-                      selectedType = value.first;
-                      trackings = [];
-                    });
-
-                    loadItems(
-                        status: value.first == ListType.inProgress
-                            ? Status.inProgress
-                            : Status.finished);
+                child: GestureDetector(
+                  onTap: () {
+                    Modular.to.pushNamed('tracking_details/teste');
                   },
-                  segments: const [
-                    ButtonSegment(
-                        value: ListType.inProgress,
-                        label: Text('Em andamento')),
-                    ButtonSegment(
-                        value: ListType.finished, label: Text('Finalizados')),
-                  ],
-                )),
-          ),
-          const SliverPadding(padding: EdgeInsets.only(top: 30)),
-          if (isLoadingTrackings)
-            const SliverToBoxAdapter(
-              child: Center(
-                child: SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: CircularProgressIndicator(),
+                  child: AppCard(
+                    name: tracking.productName!,
+                    updateAt: tracking.updatedAt,
+                  ),
                 ),
-              ),
-            ),
-          if (!isLoadingTrackings && trackings.isEmpty)
-            const SliverToBoxAdapter(
-              child: Center(
-                child: Text('Nenhum rastreio encontrado =/'),
-              ),
-            ),
-          SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-            var tracking = trackings[index];
-            return Padding(
-              padding: EdgeInsets.only(
-                top: 10,
-                left: MediaQuery.of(context).size.width * 0.1,
-                right: MediaQuery.of(context).size.width * 0.1,
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  Modular.to.pushNamed('tracking_details/teste');
-                },
-                child: AppCard(
-                  name: tracking.productName!,
-                  updateAt: tracking.updatedAt,
-                ),
-              ),
-            );
-          }, childCount: trackings.length)),
-          SliverPadding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.03 + 100.0)),
-        ],
+              );
+            }, childCount: trackings.length)),
+            SliverPadding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.03 + 100.0)),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
