@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:ratracks/domain/entities/enums/status_enum.dart';
 import 'package:ratracks/domain/entities/enums/transporter_enum.dart';
+import 'package:ratracks/domain/entities/tracking_details_entity.dart';
 
 class TrackingEntity extends Equatable {
   final String id;

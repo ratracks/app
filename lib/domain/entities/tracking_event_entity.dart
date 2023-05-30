@@ -1,6 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:ratracks/domain/entities/enums/status_enum.dart';
-import 'package:ratracks/domain/entities/enums/transporter_enum.dart';
 
 class TrackingEvent extends Equatable {
   final DateTime eventDate;
