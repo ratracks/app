@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'app_module.dart';
 
@@ -30,14 +31,18 @@ class AppChild extends StatelessWidget {
     return MaterialApp.router(
       title: 'RaTracks',
       theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context).textTheme,
+        ),
         scaffoldBackgroundColor: const Color.fromRGBO(240, 240, 240, 1),
-        appBarTheme: const AppBarTheme(
-            backgroundColor: Color.fromARGB(255, 255, 132, 32),
-            titleTextStyle: TextStyle(
+        appBarTheme: AppBarTheme(
+            backgroundColor: const Color.fromARGB(255, 255, 132, 32),
+            titleTextStyle: GoogleFonts.poppins(
+                textStyle: const TextStyle(
               color: Color.fromARGB(255, 255, 255, 255),
               fontWeight: FontWeight.bold,
-            ),
-            iconTheme: IconThemeData(
+            )),
+            iconTheme: const IconThemeData(
               color: Colors.white,
             )),
         filledButtonTheme: FilledButtonThemeData(
@@ -51,10 +56,11 @@ class AppChild extends StatelessWidget {
             foregroundColor: MaterialStateProperty.all<Color>(
               const Color.fromARGB(255, 255, 255, 255),
             ),
-            textStyle: MaterialStateProperty.all<TextStyle>(const TextStyle(
+            textStyle: MaterialStateProperty.all<TextStyle>(GoogleFonts.poppins(
+                textStyle: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 14.0,
-            )),
+            ))),
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -80,13 +86,13 @@ class AppChild extends StatelessWidget {
             ),
           ),
         ),
-        segmentedButtonTheme: SegmentedButtonThemeData(style: ButtonStyle(          
+        segmentedButtonTheme: SegmentedButtonThemeData(
+            style: ButtonStyle(
           side: MaterialStateProperty.resolveWith((states) {
             return const BorderSide(width: 1, color: Colors.orange);
           }),
           visualDensity: VisualDensity.comfortable,
           splashFactory: InkRipple.splashFactory,
-          
           backgroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {
@@ -94,7 +100,7 @@ class AppChild extends StatelessWidget {
               }
 
               return Colors.transparent;
-            },                      
+            },
           ),
           foregroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.selected)) {
