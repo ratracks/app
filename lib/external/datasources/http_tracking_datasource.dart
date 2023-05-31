@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:ratracks/core/http/http_client.dart';
 import 'package:ratracks/domain/entities/enums/status_enum.dart';
 import 'package:ratracks/domain/entities/tracking_entity.dart';
