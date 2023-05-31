@@ -1,12 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:ratracks/domain/entities/enums/status_enum.dart';
 import 'package:ratracks/domain/entities/tracking_event_entity.dart';
 
 class TrackingDetails extends Equatable {
   final DateTime expectedDate;
   final String trackCode;
   final String type;
-  final Status descriptionType;
+  final String descriptionType;
   final List<TrackingEvent> events;
 
   const TrackingDetails({

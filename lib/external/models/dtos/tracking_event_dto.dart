@@ -16,7 +16,7 @@ class TrackingEventDto {
   static TrackingEventDto fromJson(Map<String, dynamic> json) {
     return TrackingEventDto(
       city: json['city'] ?? '',
-      eventDate: json['eventDate'] ?? '',
+      eventDate: json['eventDate'] != null ? DateTime.parse(json['eventDate']) : DateTime.now(),
       description: json['description'] ?? '',
       type: json['type'] ?? '',
       uf: json['uf'] ?? '',

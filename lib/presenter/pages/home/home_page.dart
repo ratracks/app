@@ -171,6 +171,7 @@ class _HomePageState extends State<HomePage> {
             SliverList(
                 delegate: SliverChildBuilderDelegate((context, index) {
               var tracking = trackings[index];
+              var trackingId = tracking.id;
               return Padding(
                 padding: EdgeInsets.only(
                   top: 10,
@@ -179,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    Modular.to.pushNamed('tracking_details/teste');
+                    Modular.to.pushNamed('tracking_details/$trackingId');
                   },
                   child: AppCard(
                     name: tracking.productName!,

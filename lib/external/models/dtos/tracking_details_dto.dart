@@ -1,12 +1,10 @@
-import 'dart:developer';
-import 'package:ratracks/domain/entities/enums/status_enum.dart';
 import 'package:ratracks/external/models/dtos/tracking_event_dto.dart';
 
 class TrackingDetailsDto {
   final DateTime expectedDate;
   final String trackCode;
   final String type;
-  final Status descriptionType;
+  final String descriptionType;
   final List<TrackingEventDto> events;
 
   const TrackingDetailsDto({
@@ -18,12 +16,12 @@ class TrackingDetailsDto {
   });
 
   static TrackingDetailsDto fromJson(Map<String, dynamic> json) {
-    log(json['events']);
+    List<TrackingEventDto> eventDtos = !json['events'].isEmpty ? List<TrackingEventDto>.from(json['events'].map((i) => TrackingEventDto.fromJson(i))) : [];
 
     return TrackingDetailsDto(
       descriptionType: json['descriptionType'] ?? '',
-      events: [],
-      expectedDate: json['expectedDate'] ?? '',
+      events: eventDtos,
+      expectedDate: json['expectedDate'] != null ? DateTime.parse(json['expectedDate']) : DateTime.now(),
       trackCode: json['trackCode'] ?? '',
       type: json['type'] ?? '',
     );

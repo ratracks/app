@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:ratracks/core/http/http_client.dart';
 import 'package:ratracks/domain/entities/enums/status_enum.dart';
 import 'package:ratracks/domain/entities/tracking_entity.dart';
@@ -60,7 +61,7 @@ class HttpTrackingDatasource implements TrackingDatasource {
 
     if (response.statusCode == 200) {
       var trackingFromJson = jsonDecode(response.data);
-
+      
       var trackingDto = TrackingDto.fromJson(trackingFromJson);
 
       return TrackingMapper().toEntity(trackingDto);

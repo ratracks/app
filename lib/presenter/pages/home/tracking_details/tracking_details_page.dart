@@ -47,7 +47,7 @@ class _TrackingDetailsPageState extends State<TrackingDetailsPage> {
       });
 
       return;
-    }, (r){
+    }, (r) {
       setState(() {
         tracking = r;
         isLoadingTrackingDetails = false;

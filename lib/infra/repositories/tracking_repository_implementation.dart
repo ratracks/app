@@ -28,8 +28,8 @@ class TrackingRepositoryImplementation implements TrackingRepository {
     try {
       final result = await datasource.getTrackings(params);
       return Right(result);
-    } on ServerException {
-      return Left(ServerFailure());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
     }
   }
   
@@ -38,8 +38,8 @@ class TrackingRepositoryImplementation implements TrackingRepository {
     try {
       final result = await datasource.getTrackingDetails(params);
       return Right(result);
-    } on ServerException {
-      return Left(ServerFailure());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
     }
   }
 }
