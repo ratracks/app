@@ -8,7 +8,7 @@ import 'package:ratracks/external/datasources/http_user_datasource.dart';
 import 'package:ratracks/infra/repositories/tracking_repository_implementation.dart';
 import 'package:ratracks/infra/repositories/user_repository_implementation.dart';
 import 'package:ratracks/presenter/pages/home/home_page.dart';
-import 'package:ratracks/presenter/pages/home/tracking_details/tracking_details_page.dart';
+import 'package:ratracks/presenter/pages/home/tracking_details/tracking_details_module.dart';
 
 class HomeModule extends Module {
   @override
@@ -27,9 +27,11 @@ class HomeModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute(Modular.initialRoute, child: (_, args) => HomePage(shouldRefresh: args.data != null ? args.data['refresh'] ?? false : false)),
-    ChildRoute('/tracking_details/:trackingId',
-        child: (_, args) =>
-            TrackingDetailsPage(trackingId: args.params['trackingId'])),
+    ChildRoute(Modular.initialRoute,
+        child: (_, args) => HomePage(
+            shouldRefresh:
+                args.data != null ? args.data['refresh'] ?? false : false)),
+    ModuleRoute('/tracking_details',
+        module: TrackingDetailsModule()),
   ];
 }

@@ -8,6 +8,7 @@ import '../entities/tracking_entity.dart';
 abstract class TrackingRepository {
   Future<Either<Failure, void>> createTracking(CreateTrackingParams params);
   Future<Either<Failure, List<TrackingEntity>>> getTrackings(GetTrackingsParams params);
+  Future<Either<Failure, TrackingEntity>> getTrackingDetails(GetTrackingDetailsParams params);
 }
 
 class CreateTrackingParams {
@@ -31,5 +32,13 @@ class GetTrackingsParams {
   GetTrackingsParams({
     required this.status,
     required this.userId,
+  });
+}
+
+class GetTrackingDetailsParams {
+  String trackingId;
+
+  GetTrackingDetailsParams({
+    required this.trackingId,
   });
 }

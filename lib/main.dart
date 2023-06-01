@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'app_module.dart';
 
 void main() {
@@ -93,10 +92,10 @@ class AppChild extends StatelessWidget {
           }),
           visualDensity: VisualDensity.comfortable,
           splashFactory: InkRipple.splashFactory,
-          textStyle: MaterialStateProperty.all(
-              GoogleFonts.poppins(textStyle: const TextStyle(
-                fontSize: 12,
-              ))),
+          textStyle: MaterialStateProperty.all(GoogleFonts.poppins(
+              textStyle: const TextStyle(
+            fontSize: 12,
+          ))),
           backgroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {
