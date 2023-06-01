@@ -28,8 +28,18 @@ class TrackingRepositoryImplementation implements TrackingRepository {
     try {
       final result = await datasource.getTrackings(params);
       return Right(result);
-    } on ServerException {
-      return Left(ServerFailure());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, TrackingEntity>> getTrackingDetails(GetTrackingDetailsParams params) async {
+    try {
+      final result = await datasource.getTrackingDetails(params);
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
     }
   }
 }

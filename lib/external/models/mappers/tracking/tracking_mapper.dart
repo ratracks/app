@@ -1,6 +1,7 @@
 import 'package:ratracks/domain/entities/tracking_entity.dart';
 import 'package:ratracks/external/models/dtos/tracking_dto.dart';
 import 'package:ratracks/external/models/mappers/mapper.dart';
+import 'package:ratracks/external/models/mappers/tracking/tracking_details_mapper.dart';
 
 class TrackingMapper implements Mapper<TrackingDto, TrackingEntity> {
   @override
@@ -14,6 +15,7 @@ class TrackingMapper implements Mapper<TrackingDto, TrackingEntity> {
       transporter: dto.transporter,
       userId: dto.userId,
       productName: dto.productName,
+      trackingDetails: dto.trackingDetails != null ? TrackingDetailsMapper().toEntity(dto.trackingDetails!) : null,
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:ratracks/core/http/http_client.dart';
+import 'dart:convert';
 
 class HttpClientImplementation implements HttpClient {
   final client = http.Client();
@@ -23,7 +24,7 @@ class HttpClientImplementation implements HttpClient {
     });
 
     return HttpResponse(
-      data: response.body, 
+      data: utf8.decode(response.bodyBytes), 
       statusCode: response.statusCode,
     );
   }
