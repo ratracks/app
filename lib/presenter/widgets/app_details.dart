@@ -15,7 +15,7 @@ class AppDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateToString = DateFormat('dd/MM/yyyy - hh:mm').format(updateAt);
+    final dateToString = DateFormat('dd/MM/yyyy - HH:mm').format(updateAt);
 
     return SizedBox(
         width: double.infinity,
