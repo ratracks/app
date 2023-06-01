@@ -19,7 +19,7 @@ class AppDetails extends StatelessWidget {
 
     return SizedBox(
         width: double.infinity,
-        height: 100,
+        height: 130,
         child: Container(
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -36,11 +36,14 @@ class AppDetails extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Column(
+                        Flexible(
+                            child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               status,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Color.fromRGBO(255, 132, 32, 1),
                                 fontSize: 14.0,
@@ -48,13 +51,15 @@ class AppDetails extends StatelessWidget {
                             ),
                             Text(
                               zone,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Color.fromRGBO(62, 62, 62, 1),
                                 fontSize: 12.0,
                               ),
                             ),
                           ],
-                        )
+                        )),
                       ],
                     ),
                     Row(
